@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Ad Spy & Creative Matrix — Women's Gummies Video Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .card-glow:hover {
+            box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.12), 0 10px 10px -5px rgba(244, 63, 94, 0.06);
+        }
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.25rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+    <!-- Top Live Downloader Status Bar -->
+    <div class="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white text-xs py-2.5 px-4 text-center font-medium flex flex-wrap items-center justify-center gap-2.5 border-b border-rose-900/30">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            VAULT COMPLETE • 400 VIDEOS DOWNLOADED
+        </span>
+        <span><strong>20 real MP4 videos per brand</strong> downloaded across all 20 benchmark brands from <code>brands.csv</code></span>
+        <button onclick="fetchLatestData()" class="ml-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-[11px] transition-all">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refresh (<span id="downloadedCounter">400 videos ready</span>)
+        </button>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-400 flex items-center justify-center text-white shadow-lg shadow-rose-500/25">
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-extrabold tracking-tight text-slate-900 font-sans">Women's Gummies Video Ad Vault</h1>
+                        <span class="px-2 py-0.5 text-[11px] font-bold bg-rose-100 text-rose-700 rounded-md">20 Videos / Brand</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Real Playable Video Ads Downloaded Directly from Meta Ads Library for Collagen, Biotin & Multivitamins</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="openBrandsModal()" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">
+                    <i data-lucide="building-2" class="w-4 h-4 text-slate-600"></i>
+                    <span>20 Brands Directory</span>
+                </button>
+                <button onclick="exportAllBriefs()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm hover:shadow transition-all">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Export All Briefs (.md)</span>
+                    <span class="sm:hidden">Export</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+        <!-- Brands Horizontal Scrollable Selector -->
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-700 px-1">
+                <span class="flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-4 h-4 text-rose-500"></i> Select Brand to Explore (20 Videos Each):
+                </span>
+                <span class="text-[11px] text-slate-400 font-normal">Click any brand pill to isolate its 20 ad variations</span>
+            </div>
+            <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1 scrollbar-thin" id="brandPillsContainer">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Filter & Search Controls Bar -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                
+                <!-- Funnel Stage Tabs -->
+                <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+                    <button onclick="setFunnelFilter('ALL')" id="tab-ALL" class="funnel-tab px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-900 shadow-sm">
+                        All Videos (<span id="count-ALL">0</span>)
+                    </button>
+                    <button onclick="setFunnelFilter('TOF')" id="tab-TOF" class="funnel-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900">
+                        TOF • Cold Hooks (<span id="count-TOF">0</span>)
+                    </button>
+                    <button onclick="setFunnelFilter('MOF')" id="tab-MOF" class="funnel-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900">
+                        MOF • Warm Proof (<span id="count-MOF">0</span>)
+                    </button>
+                    <button onclick="setFunnelFilter('BOF')" id="tab-BOF" class="funnel-tab px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900">
+                        BOF • Offers (<span id="count-BOF">0</span>)
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative flex-1 max-w-md">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        oninput="handleSearch(this.value)"
+                        placeholder="Search hooks, scripts, angles (e.g. 'Pill Fatigue', 'Nails', 'Lemme')..." 
+                        class="w-full pl-10 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                    >
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs text-slate-500">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Showing:</span>
+                    <span id="activeBrandLabel" class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">All Brands</span>
+                </div>
+                <div id="resultCount" class="font-semibold text-slate-600">Loading videos...</div>
+            </div>
+        </div>
+
+        <!-- Video Cards Grid -->
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-medium text-slate-700">Meta Ads Spy & Video Creative Vault for Women's Gummy Brands</p>
+            <p>Downloaded from active Meta Ad Library campaigns across 20 benchmark brands. Designed for rapid creative testing and cloning.</p>
+        </div>
+    </footer>
+
+    <!-- Video Blueprint Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden my-auto animate-fadeIn">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span id="modalBrandBadge" class="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-rose-100 text-rose-700"></span>
+                    <span id="modalFunnelBadge" class="px-2.5 py-1 text-xs font-bold rounded-lg"></span>
+                    <h3 id="modalTitle" class="text-base font-bold text-slate-900"></h3>
+                </div>
+                <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body Split Screen: Left Video Player | Right Strategy Breakdown -->
+            <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Column: Big Video Player (5 Cols) -->
+                <div class="lg:col-span-5 space-y-3 flex flex-col">
+                    <div class="w-full aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-xl border border-slate-800 flex items-center justify-center relative">
+                        <video id="modalVideoPlayer" controls autoplay loop playsinline class="w-full h-full object-cover">
+                            <source src="" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Real Downloaded Meta Ad</span>
+                        <a id="modalMetaLink" href="#" target="_blank" class="text-blue-600 font-bold hover:underline flex items-center gap-1">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Meta Ad Library
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Strategy & Clone Blueprint (7 Cols) -->
+                <div class="lg:col-span-7 space-y-5 overflow-y-auto pr-1">
+
+                    <!-- Tab Buttons -->
+                    <div class="border-b border-slate-200 flex gap-4 text-xs font-bold">
+                        <button onclick="switchModalTab('CLONE')" id="modalTab-CLONE" class="pb-3 border-b-2 border-rose-600 text-rose-600 flex items-center gap-1.5">
+                            <i data-lucide="copy" class="w-4 h-4"></i> Clone Guide for Your Brand
+                        </button>
+                        <button onclick="switchModalTab('STORYBOARD')" id="modalTab-STORYBOARD" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="film" class="w-4 h-4"></i> Storyboard & Script
+                        </button>
+                        <button onclick="switchModalTab('ADTEXT')" id="modalTab-ADTEXT" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Original Meta Copy
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: CLONE GUIDE -->
+                    <div id="tabContent-CLONE" class="space-y-5">
+                        
+                        <!-- Creator Brief -->
+                        <div class="bg-rose-50/70 border border-rose-200 rounded-2xl p-4 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-800">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-rose-600"></i>
+                                    Creator Brief (UGC Brief for Collagen & Biotin)
+                                </span>
+                                <button onclick="copyCurrentBrief()" class="text-xs font-bold text-rose-600 hover:text-rose-700 bg-white px-2.5 py-1 rounded-lg border border-rose-200 shadow-sm flex items-center gap-1">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Brief
+                                </button>
+                            </div>
+                            <p id="modalCreatorBrief" class="text-xs text-slate-700 leading-relaxed font-sans"></p>
+                        </div>
+
+                        <!-- 3 A/B Hook Variations -->
+                        <div class="space-y-2.5">
+                            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="shuffle" class="w-4 h-4 text-rose-500"></i> 3 Hook Variations to Test
+                            </h4>
+                            <div id="modalHookVariations" class="grid grid-cols-1 gap-2.5"></div>
+                        </div>
+
+                        <!-- Primary Ad Copy -->
+                        <div class="space-y-2.5">
+                            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="share-2" class="w-4 h-4 text-rose-500"></i> Ad Copy Ready to Launch
+                            </h4>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                <div>
+                                    <span class="text-[11px] font-bold text-slate-500 uppercase">Headline:</span>
+                                    <div id="modalAdCopyHeadline" class="text-xs font-bold text-slate-900 mt-1 bg-white p-2 rounded-xl border border-slate-200"></div>
+                                </div>
+                                <div>
+                                    <span class="text-[11px] font-bold text-slate-500 uppercase">Primary Text:</span>
+                                    <pre id="modalAdCopyText" class="text-xs text-slate-800 whitespace-pre-wrap font-sans mt-1 bg-white p-3 rounded-xl border border-slate-200"></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 2: STORYBOARD -->
+                    <div id="tabContent-STORYBOARD" class="space-y-3 hidden">
+                        <div id="modalStoryboardTimeline" class="space-y-2.5"></div>
+                    </div>
+
+                    <!-- TAB 3: ORIGINAL META AD COPY -->
+                    <div id="tabContent-ADTEXT" class="space-y-3 hidden">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
+                            <div class="font-bold text-slate-900">Extracted Ad Copy from Meta:</div>
+                            <pre id="modalExtractedCopy" class="whitespace-pre-wrap font-sans text-slate-700 bg-white p-3 rounded-xl border border-slate-200"></pre>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <button onclick="copyCurrentBrief()" class="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors flex items-center gap-1.5">
+                    <i data-lucide="copy" class="w-4 h-4"></i> Copy Creator Brief
+                </button>
+                <button onclick="closeDetailModal()" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-200 hover:bg-slate-300 rounded-xl transition-colors">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 20 Brands Directory Modal -->
+    <div id="brandsModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden my-auto">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">20 Benchmark Gummy Brands</h3>
+                    <p class="text-xs text-slate-500">Loaded directly from your <code>brands.csv</code> file</p>
+                </div>
+                <button onclick="closeBrandsModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="divide-y divide-slate-100" id="brandsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700 text-xs font-semibold flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        let blueprints = [];
+        let currentFilter = 'ALL';
+        let currentSearch = '';
+        let currentBrand = 'ALL';
+        let activeBlueprint = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLatestData();
+            lucide.createIcons();
+        });
+
+        async function fetchLatestData() {
+            try {
+                // Try expanded first
+                const r = await fetch('data/ad_blueprints_expanded.json?t=' + Date.now());
+                if (r.ok) {
+                    blueprints = await r.json();
+                } else {
+                    const r2 = await fetch('data/ad_blueprints.json?t=' + Date.now());
+                    blueprints = await r2.json();
+                }
+            } catch (e) {
+                console.error("Error fetching data, using fallback", e);
+            }
+
+            document.getElementById('downloadedCounter').textContent = blueprints.length + ' videos ready';
+            renderBrandPills();
+            updateCounts();
+            renderCards();
+            renderBrandsDirectory();
+        }
+
+        function updateCounts() {
+            document.getElementById('count-ALL').textContent = blueprints.length;
+            document.getElementById('count-TOF').textContent = blueprints.filter(b => b.funnel_stage === 'TOF').length;
+            document.getElementById('count-MOF').textContent = blueprints.filter(b => b.funnel_stage === 'MOF').length;
+            document.getElementById('count-BOF').textContent = blueprints.filter(b => b.funnel_stage === 'BOF').length;
+        }
+
+        function renderBrandPills() {
+            const container = document.getElementById('brandPillsContainer');
+            container.innerHTML = '';
+
+            const brandCounts = {};
+            blueprints.forEach(b => {
+                brandCounts[b.brand] = (brandCounts[b.brand] || 0) + 1;
+            });
+
+            // ALL pill
+            const allBtn = document.createElement('button');
+            allBtn.onclick = () => selectBrand('ALL');
+            allBtn.className = `brand-pill px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${currentBrand === 'ALL' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
+            allBtn.innerHTML = `All Brands <span class="ml-1 px-1.5 py-0.2 bg-white/20 rounded-full text-[10px]">${blueprints.length}</span>`;
+            container.appendChild(allBtn);
+
+            // Each brand
+            Object.keys(brandCounts).sort().forEach(b => {
+                const btn = document.createElement('button');
+                btn.onclick = () => selectBrand(b);
+                const isSelected = currentBrand === b;
+                btn.className = `brand-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${isSelected ? 'bg-rose-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
+                btn.innerHTML = `${b} <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] ${isSelected ? 'bg-white/30 text-white' : 'bg-slate-200 text-slate-600'}">${brandCounts[b]}</span>`;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectBrand(b) {
+            currentBrand = b;
+            document.getElementById('activeBrandLabel').textContent = b === 'ALL' ? 'All Brands' : b;
+            renderBrandPills();
+            renderCards();
+        }
+
+        function setFunnelFilter(stage) {
+            currentFilter = stage;
+            document.querySelectorAll('.funnel-tab').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById('tab-' + stage);
+            activeBtn.classList.remove('text-slate-600');
+            activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            renderCards();
+        }
+
+        function handleSearch(val) {
+            currentSearch = val.toLowerCase().trim();
+            renderCards();
+        }
+
+        function getFilteredBlueprints() {
+            return blueprints.filter(item => {
+                if (currentFilter !== 'ALL' && item.funnel_stage !== currentFilter) return false;
+                if (currentBrand !== 'ALL' && item.brand !== currentBrand) return false;
+                if (currentSearch) {
+                    const searchable = (
+                        item.brand + ' ' +
+                        item.video_title + ' ' +
+                        item.primary_angle + ' ' +
+                        (item.hook_0_3s?.text_overlay || '') + ' ' +
+                        (item.ad_copy_extracted || '')
+                    ).toLowerCase();
+                    if (!searchable.includes(currentSearch)) return false;
+                }
+                return true;
+            });
+        }
+
+        function renderCards() {
+            const container = document.getElementById('cardsGrid');
+            container.innerHTML = '';
+            const filtered = getFilteredBlueprints();
+
+            document.getElementById('resultCount').textContent = `Displaying ${filtered.length} video ads`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-16 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
+                            <i data-lucide="video-off" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-700">No video ads found for this filter</h4>
+                        <p class="text-xs text-slate-400">Background downloader is active, click 'Refresh Feed' to load newly saved videos</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md card-glow transition-all flex flex-col overflow-hidden";
+                
+                let funnelColor = "bg-blue-50 text-blue-700 border-blue-200";
+                let funnelLabel = "TOF • Cold Hook";
+                if (item.funnel_stage === 'MOF') {
+                    funnelColor = "bg-amber-50 text-amber-700 border-amber-200";
+                    funnelLabel = "MOF • Consideration";
+                } else if (item.funnel_stage === 'BOF') {
+                    funnelColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
+                    funnelLabel = "BOF • Retargeting";
+                }
+
+                // Check if local video file exists
+                const videoSrc = item.video_file || '';
+                const hasVideo = !!videoSrc;
+
+                card.innerHTML = `
+                    <!-- Card Top Header -->
+                    <div class="p-4 pb-2.5 space-y-1.5 border-b border-slate-100">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-extrabold text-sm text-slate-900">${item.brand}</span>
+                                <span class="text-[10px] text-slate-400 font-medium">• ${item.product_category || 'Gummies'}</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${funnelColor}">
+                                ${funnelLabel}
+                            </span>
+                        </div>
+                        <h3 class="text-xs font-bold text-slate-900 line-clamp-1">${item.video_title}</h3>
+                    </div>
+
+                    <!-- REAL PLAYABLE VIDEO CONTAINER -->
+                    <div class="relative bg-black aspect-[9/12] flex items-center justify-center overflow-hidden group">
+                        ${hasVideo ? `
+                            <video src="${videoSrc}" controls loop playsinline preload="metadata" class="w-full h-full object-cover">
+                            </video>
+                        ` : `
+                            <div class="text-center p-4 text-white">
+                                <i data-lucide="film" class="w-8 h-8 text-rose-500 mx-auto mb-1"></i>
+                                <div class="text-xs font-bold">Meta Ad Video Processing</div>
+                            </div>
+                        `}
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-4 space-y-3 flex-1 flex flex-col justify-between text-xs">
+                        <div class="space-y-1">
+                            <div class="text-[11px] font-bold text-rose-600 flex items-center gap-1">
+                                <i data-lucide="target" class="w-3 h-3"></i> ${item.primary_angle}
+                            </div>
+                            <p class="text-[11px] text-slate-600 line-clamp-2 italic">
+                                "${item.hook_0_3s?.text_overlay || item.hook_0_3s?.voiceover || 'Active video ad format'}"
+                            </p>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="space-y-2 pt-1 border-t border-slate-100">
+                            <button onclick="openDetailModal('${item.id}')" class="w-full py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                Open Full Blueprint & Script
+                            </button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="copyBriefById('${item.id}')" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-[11px] flex items-center justify-center gap-1 transition-colors">
+                                    <i data-lucide="copy" class="w-3 h-3"></i> Copy Brief
+                                </button>
+                                <a href="${item.meta_ads_library_url}" target="_blank" class="py-1.5 px-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-[11px] flex items-center justify-center gap-1 transition-colors">
+                                    <i data-lucide="external-link" class="w-3 h-3"></i> Ad Library
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function openDetailModal(id) {
+            activeBlueprint = blueprints.find(b => b.id === id);
+            if (!activeBlueprint) return;
+
+            document.getElementById('modalBrandBadge').textContent = activeBlueprint.brand;
+            document.getElementById('modalTitle').textContent = activeBlueprint.video_title;
+            
+            const funnelBadge = document.getElementById('modalFunnelBadge');
+            funnelBadge.textContent = activeBlueprint.funnel_stage + ' Stage';
+            if (activeBlueprint.funnel_stage === 'TOF') {
+                funnelBadge.className = 'px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-100 text-blue-700';
+            } else if (activeBlueprint.funnel_stage === 'MOF') {
+                funnelBadge.className = 'px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-700';
+            } else {
+                funnelBadge.className = 'px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-100 text-emerald-700';
+            }
+
+            // Set video src in modal
+            const modalVideo = document.getElementById('modalVideoPlayer');
+            modalVideo.src = activeBlueprint.video_file || '';
+            modalVideo.load();
+            modalVideo.play().catch(() => {});
+
+            // Clone Tab
+            const clone = activeBlueprint.clone_blueprint_for_your_brand;
+            document.getElementById('modalCreatorBrief').textContent = clone?.creator_brief || 'Replicate visual pacing, hook text overlay, and problem agitation.';
+
+            const hooksContainer = document.getElementById('modalHookVariations');
+            hooksContainer.innerHTML = '';
+            (clone?.hook_variations || []).forEach((h, idx) => {
+                const d = document.createElement('div');
+                d.className = "bg-white p-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 space-y-0.5 shadow-sm";
+                d.innerHTML = `
+                    <div class="text-[10px] font-bold text-rose-600 uppercase">Hook Option ${String.fromCharCode(65 + idx)}</div>
+                    <div class="font-medium italic">"${h}"</div>
+                `;
+                hooksContainer.appendChild(d);
+            });
+
+            document.getElementById('modalAdCopyText').textContent = clone?.ad_copy_primary_text || '';
+            document.getElementById('modalAdCopyHeadline').textContent = clone?.ad_copy_headline || '';
+
+            // Storyboard
+            const timelineContainer = document.getElementById('modalStoryboardTimeline');
+            timelineContainer.innerHTML = '';
+            (clone?.shot_by_shot_storyboard || []).forEach(step => {
+                const row = document.createElement('div');
+                row.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1 text-xs";
+                row.innerHTML = `
+                    <div class="flex items-center justify-between font-bold text-slate-900">
+                        <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 text-[10px]">${step.timestamp}</span>
+                        <span class="text-slate-500 font-mono text-[10px]">${step.caption}</span>
+                    </div>
+                    <div class="text-slate-700"><strong>Shot:</strong> ${step.shot}</div>
+                    <div class="text-slate-600 italic"><strong>Voiceover:</strong> "${step.audio}"</div>
+                `;
+                timelineContainer.appendChild(row);
+            });
+
+            // Extracted Ad Copy
+            document.getElementById('modalExtractedCopy').textContent = activeBlueprint.ad_copy_extracted || 'No text extracted.';
+            document.getElementById('modalMetaLink').href = activeBlueprint.meta_ads_library_url;
+
+            switchModalTab('CLONE');
+            document.getElementById('detailModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeDetailModal() {
+            const modalVideo = document.getElementById('modalVideoPlayer');
+            modalVideo.pause();
+            modalVideo.src = '';
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        function switchModalTab(tab) {
+            ['CLONE', 'STORYBOARD', 'ADTEXT'].forEach(t => {
+                document.getElementById('tabContent-' + t).classList.add('hidden');
+                document.getElementById('modalTab-' + t).classList.remove('border-rose-600', 'text-rose-600');
+                document.getElementById('modalTab-' + t).classList.add('border-transparent', 'text-slate-500');
+            });
+            document.getElementById('tabContent-' + tab).classList.remove('hidden');
+            document.getElementById('modalTab-' + tab).classList.add('border-rose-600', 'text-rose-600');
+            document.getElementById('modalTab-' + tab).classList.remove('border-transparent', 'text-slate-500');
+            lucide.createIcons();
+        }
+
+        function copyCurrentBrief() {
+            if (!activeBlueprint) return;
+            const b = activeBlueprint.clone_blueprint_for_your_brand;
+            const text = `CREATOR BRIEF FOR WOMEN'S GUMMIES (COLLAGEN + BIOTIN + MULTIVITAMIN)
+Format: ${activeBlueprint.video_title}
+Brand Model: ${activeBlueprint.brand}
+Angle: ${activeBlueprint.primary_angle}
+
+BRIEF:
+${b?.creator_brief || ''}
+
+HOOKS TO TEST:
+${(b?.hook_variations || []).map((h, i) => `- Option ${String.fromCharCode(65+i)}: "${h}"`).join('\n')}
+
+PRIMARY AD COPY:
+${b?.ad_copy_primary_text || ''}
+
+HEADLINE:
+${b?.ad_copy_headline || ''}`;
+
+            navigator.clipboard.writeText(text);
+            showToast("Creator Brief copied to clipboard!");
+        }
+
+        function copyBriefById(id) {
+            const bp = blueprints.find(b => b.id === id);
+            if (!bp) return;
+            activeBlueprint = bp;
+            copyCurrentBrief();
+        }
+
+        function openBrandsModal() {
+            document.getElementById('brandsModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeBrandsModal() {
+            document.getElementById('brandsModal').classList.add('hidden');
+        }
+
+        function renderBrandsDirectory() {
+            const list = document.getElementById('brandsList');
+            list.innerHTML = '';
+            const uniqueBrands = [...new Set(blueprints.map(b => b.brand))].sort();
+            uniqueBrands.forEach((brandName, idx) => {
+                const sample = blueprints.find(b => b.brand === brandName);
+                const count = blueprints.filter(b => b.brand === brandName).length;
+                const row = document.createElement('div');
+                row.className = "py-3 flex items-center justify-between text-xs";
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 text-slate-400 font-bold font-mono">${idx + 1}.</span>
+                        <div>
+                            <div class="font-bold text-slate-900">${brandName}</div>
+                            <span class="text-[11px] text-rose-600 font-semibold">${count} videos downloaded</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="selectBrand('${brandName}'); closeBrandsModal();" class="px-2.5 py-1.5 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg font-semibold transition-colors">
+                            View ${count} Videos
+                        </button>
+                        <a href="${sample?.meta_ads_library_url || '#'}" target="_blank" class="px-2.5 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg font-semibold flex items-center gap-1 transition-colors">
+                            <i data-lucide="external-link" class="w-3 h-3"></i> Ad Library
+                        </a>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function exportAllBriefs() {
+            let content = "# META ADS CREATIVE VAULT - WOMEN'S GUMMIES BRAND\n";
+            content += "# Formula: Collagen + Biotin 5000mcg + Multivitamins\n\n";
+            
+            blueprints.forEach((b, idx) => {
+                content += `## ${idx + 1}. ${b.brand} - ${b.video_title}\n`;
+                content += `- **Funnel Stage**: ${b.funnel_stage}\n`;
+                content += `- **Primary Angle**: ${b.primary_angle}\n`;
+                content += `- **Creator Brief**: ${b.clone_blueprint_for_your_brand?.creator_brief || ''}\n\n`;
+                content += `### Hook Variations:\n`;
+                (b.clone_blueprint_for_your_brand?.hook_variations || []).forEach(h => content += `- "${h}"\n`);
+                content += `\n### Ad Copy:\n`;
+                content += `**Headline**: ${b.clone_blueprint_for_your_brand?.ad_copy_headline || ''}\n`;
+                content += `**Primary Text**:\n\`\`\`\n${b.clone_blueprint_for_your_brand?.ad_copy_primary_text || ''}\n\`\`\`\n\n`;
+                content += `--------------------------------------------------\n\n`;
+            });
+
+            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Gummies_Video_Ad_Vault_Briefs.md";
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("Exported all briefs to Markdown!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

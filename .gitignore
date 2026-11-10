@@ -1,0 +1,21 @@
+# Python & Virtualenv
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+
+# Test & Temp Scripts
+test_*.py
+inspect_*.py
+get_*.py
+fill_*.py
+batch_*.py
+generate_*.py
+strict_*.py
+top_up_*.py
+check_*.py
+create_github_repo.py
+*.png
+*.log
+*.tmp
